@@ -15,6 +15,14 @@ const GameBoard: React.FC<GameBoardProps> = ({ questions, onFinish }) => {
   const [feedback, setFeedback] = useState<"CORRECT" | "WRONG" | "TIMEOUT" | null>(null);
 
   const currentQuestion = questions[currentIndex];
+  
+  // Preload all images for the current round
+  useEffect(() => {
+    questions.forEach((q) => {
+      const img = new (window as any).Image();
+      img.src = q.image;
+    });
+  }, [questions]);
 
   const handleAnswer = (answer: string) => {
     if (selectedAnswer || feedback) return;
