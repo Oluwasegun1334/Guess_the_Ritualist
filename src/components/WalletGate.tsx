@@ -34,6 +34,10 @@ const WalletGate: React.FC<WalletGateProps> = ({ onConnected }) => {
     connect({ connector });
   };
 
+  const filteredConnectors = connectors.filter((c) => 
+    c.name.toLowerCase().includes("metamask")
+  );
+
   // Don't render wallet-specific UI until client-side hydration is done
   if (!mounted) return null;
 
@@ -60,11 +64,11 @@ const WalletGate: React.FC<WalletGateProps> = ({ onConnected }) => {
         </p>
       </div>
 
-      {/* No wallets installed */}
-      {!isConnected && connectors.length === 0 && (
+      {/* No MetaMask installed */}
+      {!isConnected && filteredConnectors.length === 0 && (
         <div className="flex flex-col items-center gap-4">
           <div className="px-5 py-3 bg-red-500/10 border border-red-500/50 text-red-400 rounded-xl text-sm font-bold uppercase italic">
-            ⚠️ No Web3 Wallet Detected
+            ⚠️ MetaMask Not Detected
           </div>
           <a
             href="https://metamask.io/download/"
@@ -72,15 +76,15 @@ const WalletGate: React.FC<WalletGateProps> = ({ onConnected }) => {
             rel="noopener noreferrer"
             className="px-8 py-3 bg-white/10 border border-white/20 text-white font-black rounded-full transition-all duration-300 hover:scale-105 uppercase italic tracking-tighter text-sm"
           >
-            Install a Wallet →
+            Install MetaMask →
           </a>
         </div>
       )}
 
-      {/* Wallets installed, not connected */}
-      {!isConnected && connectors.length > 0 && (
+      {/* MetaMask installed, not connected */}
+      {!isConnected && filteredConnectors.length > 0 && (
         <div className="flex flex-col items-center gap-3 w-full max-w-xs">
-          {connectors.map((connector) => (
+          {filteredConnectors.map((connector) => (
             <button
               key={connector.uid}
               onClick={() => handleConnect(connector)}
